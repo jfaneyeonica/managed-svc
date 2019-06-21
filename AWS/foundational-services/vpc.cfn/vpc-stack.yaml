@@ -1,0 +1,9 @@
+tessys_path: ./
+namespace: ${customer}
+stacker_bucket: ''
+
+stacks:
+  - name: base-vpc
+    template_path: cloudformation/network.yml
+    enabled: true
+    

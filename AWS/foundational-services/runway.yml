@@ -1,0 +1,6 @@
+deployments:
+  - modules:
+      - iam.cfn
+      - vpc.cfn
+    regions:
+      - us-east-1

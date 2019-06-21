@@ -1,0 +1,214 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: FCMS-655 Base Network.
+Mappings: {}
+Parameters:
+  VPCCIDR:
+    Description: The IP address range for the VPC
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    Default: 10.1.0.0/16
+    AllowedPattern: '(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})'
+    ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
+  PublicSubnet1CIDR:
+    Description: IP CIDR representing PublicSubnet1
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    Default: 10.1.1.0/24
+    AllowedPattern: '^([0-9]+\.){3}[0-9]+\/[0-9]+$'
+  PublicSubnet2CIDR:
+    Description: IP CIDR representing PublicSubnet2
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    Default: 10.1.2.0/24
+    AllowedPattern: '^([0-9]+\.){3}[0-9]+\/[0-9]+$'
+  PrivateSubnet1CIDR:
+    Description: IP CIDR representing PrivateSubnet1
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    Default: 10.1.3.0/24
+    AllowedPattern: '^([0-9]+\.){3}[0-9]+\/[0-9]+$'
+  PrivateSubnet2CIDR:
+    Description: IP CIDR representing PrivateSubnet2
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    Default: 10.1.4.0/24
+    AllowedPattern: '^([0-9]+\.){3}[0-9]+\/[0-9]+$'
+Resources:
+  VPC:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: !Ref VPCCIDR
+      Tags:
+        - Key: Name
+          Value: Core-vpc
+  InternetGateway:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties:
+      Tags:
+        - Key: Name
+          Value: Core-IGW
+  AttachGateway:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+  EIP1:
+    Type: 'AWS::EC2::EIP'
+    Properties:
+      Domain: vpc
+  EIP2:
+    Type: 'AWS::EC2::EIP'
+    Properties:
+      Domain: vpc
+  
+  NAT1:
+    DependsOn: AttachGateway
+    Type: 'AWS::EC2::NatGateway'
+    Properties:
+      AllocationId: !GetAtt 
+        - EIP1
+        - AllocationId
+      SubnetId: !Ref PublicSubnet1
+      Tags:
+        - Key: Name
+          Value: routetable-Nat1
+  NAT2:
+    DependsOn: AttachGateway
+    Type: 'AWS::EC2::NatGateway'
+    Properties:
+      AllocationId: !GetAtt 
+        - EIP2
+        - AllocationId
+      SubnetId: !Ref PublicSubnet2
+      Tags:
+        - Key: Name
+          Value: routetable-Nat2
+
+  PrivateRouteTable1:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: routetable-private1
+  PrivateDefaultRoute1:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NAT1
+      RouteTableId: !Ref PrivateRouteTable1
+  PrivateRouteAssociation1:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable1
+      SubnetId: !Ref PrivateSubnet1
+
+  PrivateRouteTable2:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: routetable-private2
+  PrivateDefaultRoute2:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NAT2
+      RouteTableId: !Ref PrivateRouteTable2
+  PrivateRouteAssociation2:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable2
+      SubnetId: !Ref PrivateSubnet2
+  PublicSubnet1:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Select 
+        - '0'
+        - !GetAZs ''
+      CidrBlock: 10.1.1.0/24
+      VpcId: !Ref VPC
+      MapPublicIpOnLaunch: 'true'
+      Tags:
+        - Key: Name
+          Value: subnet-public-a
+  PublicSubnet2:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Select 
+        - '1'
+        - !GetAZs ''
+      CidrBlock: 10.1.2.0/24
+      VpcId: !Ref VPC
+      MapPublicIpOnLaunch: 'true'
+      Tags:
+        - Key: Name
+          Value: subnet-public-b
+  PrivateSubnet1:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Select 
+        - '0'
+        - !GetAZs ''
+      CidrBlock: 10.1.3.0/24
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: subnet-private-a
+  PrivateSubnet2:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Select 
+        - '1'
+        - !GetAZs ''
+      CidrBlock: 10.1.4.0/24
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: subnet-private-b
+  PublicRouteTable:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: routetable-public
+  PublicDefaultRoute:
+    Type: 'AWS::EC2::Route'
+    DependsOn: AttachGateway
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+      RouteTableId: !Ref PublicRouteTable
+  PublicRouteAssociation1:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet1
+  PublicRouteAssociation2:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet2
+Outputs:
+  CoreVPC:
+    Description: VPC Id to be made available to the Application stack
+    Value: !Ref VPC
+  PrivateSubnet1:
+    Description: Private Subnet 1 needed in the Application stack
+    Value: !Ref PrivateSubnet1
+  PrivateSubnet2:
+    Description: Private Subnet 2 needed in the Application stack
+    Value: !Ref PrivateSubnet2
+  PublicSubnet1:
+    Description: Public Subnet 1 needed in the Application stack
+    Value: !Ref PublicSubnet1
+  PublicSubnet2:
+    Description: Private Subnet 2 needed in the Application stack
+    Value: !Ref PrivateSubnet2
