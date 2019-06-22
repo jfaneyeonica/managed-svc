@@ -17,8 +17,8 @@ Resources:
         Password: myP@ssW0rd
       UserName: tonyo
 
-Outputs:
-  User2Info:
-    Description: Properties of User2 to be made available to other stacks
-    Value: !Ref user2
+#Outputs:
+#  User2Info:
+#    Description: Properties of User2 to be made available to other stacks
+#    Value: !Ref user2
     
