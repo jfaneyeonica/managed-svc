@@ -1,0 +1,5 @@
+Pipfile
+Pipfile.lock
+.git
+.DS_Store
+*/.DS_Store
