@@ -4,6 +4,6 @@ stacker_bucket: ''
 
 stacks:
   - name: base-vpc
-    template_path: cloudformation/network.yml
+    template_path: cloudformation/instance1.yml
     enabled: true
     
