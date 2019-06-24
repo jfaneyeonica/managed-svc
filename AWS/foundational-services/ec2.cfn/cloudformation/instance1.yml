@@ -10,11 +10,11 @@ Resources:
           InstanceType: "t2.medium" #!Ref InstanceType
   #        SecurityGroups:
   #        - !Ref Ec2SecurityGroup
-          BlockDeviceMappings:
-          -
-            DeviceName: /dev/sda1
-            Ebs:
-              VolumeSize: 10
+  #        BlockDeviceMappings:
+  #        -
+  #          DeviceName: /dev/sda1
+  #          Ebs:
+  #            VolumeSize: 10
   #        -
   #          DeviceName: /dev/sdm
   #          Ebs:
