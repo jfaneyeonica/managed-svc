@@ -2,5 +2,6 @@ deployments:
   - modules:
       - iam.cfn
       - vpc.cfn
+      - ec2.cfn
     regions:
       - us-east-1
