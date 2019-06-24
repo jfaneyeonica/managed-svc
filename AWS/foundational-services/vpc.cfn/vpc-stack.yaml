@@ -2,6 +2,10 @@ tessys_path: ./
 namespace: ${customer}
 stacker_bucket: ''
 
+ package_sources:
+  local:
+    - source: ../vpc.cfn
+
 stacks:
   - name: base-vpc
     template_path: cloudformation/network.yml
