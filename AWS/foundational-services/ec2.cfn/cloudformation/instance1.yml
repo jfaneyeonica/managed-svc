@@ -7,15 +7,15 @@ Resources:
       Properties:
           ImageId: "ami-035b3c7efe6d061d5" #!FindInMap [ AWSRegionArch2AMI, !Ref 'AWS::Region' , !FindInMap [ AWSInstanceType2Arch, !Ref InstanceType, Arch ] ]
           KeyName: "flab-Virginia-key"  #!Ref KeyName
-          InstanceType: "t2.micro" #!Ref InstanceType
+          InstanceType: "t2.medium" #!Ref InstanceType
   #        SecurityGroups:
   #        - !Ref Ec2SecurityGroup
           BlockDeviceMappings:
           -
             DeviceName: /dev/sda1
             Ebs:
-              VolumeSize: 50
-          -
-            DeviceName: /dev/sdm
-            Ebs:
-              VolumeSize: 100
+              VolumeSize: 10
+  #        -
+  #          DeviceName: /dev/sdm
+  #          Ebs:
+  #            VolumeSize: 100
