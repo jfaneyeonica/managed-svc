@@ -1,3 +1,4 @@
+CI=1
 deployments:
   - modules:
       - iam.cfn
