@@ -15,14 +15,7 @@ Resources:
       Path: "/"
       LoginProfile:
         Password: myP@ssW0rd
-      UserName: tonyo11
-  user3:
-    Type: AWS::IAM::User
-    Properties:
-      Path: "/"
-      LoginProfile:
-        Password: myP@ssW0rd
-      UserName: danny
+      UserName: tonyk
 
 # new entry
 # new entry
