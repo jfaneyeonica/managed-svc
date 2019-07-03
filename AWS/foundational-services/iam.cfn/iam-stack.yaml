@@ -6,4 +6,5 @@ stacks:
   - name: iam-users
     template_path: cloudformation/iam-user.yml
     enabled: true
+    profile: jblab
     
