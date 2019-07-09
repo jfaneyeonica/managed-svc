@@ -2,10 +2,6 @@ sys_path: ./
 namespace: ${customer}
 stacker_bucket: ''
 
- package_sources:
-  local:
-    - source: ../iam.cfn
-
 stacks:
   - name: iam-users
     template_path: cloudformation/iam-user.yml

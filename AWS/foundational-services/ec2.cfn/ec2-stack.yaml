@@ -3,7 +3,7 @@ namespace: ${customer}
 stacker_bucket: ''
 
 stacks:
-  - name: base-vpc
-    template_path: cloudformation/testvpc.yml
+  - name: test-ec2
+    template_path: cloudformation/instance1.yml
     enabled: true
     
