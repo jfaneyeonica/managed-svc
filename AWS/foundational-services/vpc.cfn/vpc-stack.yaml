@@ -6,5 +6,4 @@ stacks:
   - name: base-vpc
     template_path: cloudformation/testvpc.yml
     enabled: true
-    profile: jblab
-    
+#    profile: jblab

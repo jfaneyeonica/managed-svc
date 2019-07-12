@@ -5,3 +5,9 @@ deployments:
 #      - ec2.cfn
     regions:
       - us-east-1
+    account-id:
+    default: 299605348825   #shared
+    jbest: 981576698432    #prod
+    onlab: 504727362876    #test
+    solab: 901570546523    #
+
