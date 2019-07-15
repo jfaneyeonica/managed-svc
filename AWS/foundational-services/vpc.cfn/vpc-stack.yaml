@@ -4,6 +4,6 @@ stacker_bucket: ''
 
 stacks:
   - name: base-vpc
-    template_path: cloudformation/testvpc.yml
+    template_path: cloudformation/networkyml
     enabled: true
-    profile: jblab
+    profile: ${profilename}

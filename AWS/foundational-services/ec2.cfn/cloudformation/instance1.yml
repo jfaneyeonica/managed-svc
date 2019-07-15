@@ -8,6 +8,7 @@ Resources:
           ImageId: "ami-035b3c7efe6d061d5" #!FindInMap [ AWSRegionArch2AMI, !Ref 'AWS::Region' , !FindInMap [ AWSInstanceType2Arch, !Ref InstanceType, Arch ] ]
           KeyName: "flab-Virginia-key"  #!Ref KeyName
           InstanceType: "t2.medium" #!Ref InstanceType
+  #        SubnetId: !Ref 
   #        SecurityGroups:
   #        - !Ref Ec2SecurityGroup
   #        BlockDeviceMappings:
