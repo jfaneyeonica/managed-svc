@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: FCMS-655 Base Network.
 Mappings: {}
 Parameters:
-  VPCCIDR:
+  VPCCIDR: ${VPCCIDR}
     Description: The IP address range for the VPC
     Type: String
     MinLength: '9'
@@ -10,28 +10,28 @@ Parameters:
     Default: 10.1.0.0/16
     AllowedPattern: '(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})'
     ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
-  PublicSubnet1CIDR:
+  PublicSubnet1CIDR: ${PublicSubnet1CIDR}
     Description: IP CIDR representing PublicSubnet1
     Type: String
     MinLength: '9'
     MaxLength: '18'
     Default: 10.1.1.0/24
     AllowedPattern: '^([0-9]+\.){3}[0-9]+\/[0-9]+$'
-  PublicSubnet2CIDR:
+  PublicSubnet2CIDR: ${PublicSubnet2CIDR}
     Description: IP CIDR representing PublicSubnet2
     Type: String
     MinLength: '9'
     MaxLength: '18'
     Default: 10.1.2.0/24
     AllowedPattern: '^([0-9]+\.){3}[0-9]+\/[0-9]+$'
-  PrivateSubnet1CIDR:
+  PrivateSubnet1CIDR: ${PrivateSubnet1CIDR}
     Description: IP CIDR representing PrivateSubnet1
     Type: String
     MinLength: '9'
     MaxLength: '18'
     Default: 10.1.3.0/24
     AllowedPattern: '^([0-9]+\.){3}[0-9]+\/[0-9]+$'
-  PrivateSubnet2CIDR:
+  PrivateSubnet2CIDR: ${PrivateSubnet2CIDR}
     Description: IP CIDR representing PrivateSubnet2
     Type: String
     MinLength: '9'
