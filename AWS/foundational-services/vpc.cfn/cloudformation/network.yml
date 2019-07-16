@@ -45,7 +45,7 @@ Resources:
       CidrBlock: !Ref VPCCIDR
       Tags:
         - Key: Name
-          Value: Core-vpc
+          Value: fccab-vpc
   InternetGateway:
     Type: 'AWS::EC2::InternetGateway'
     Properties:
